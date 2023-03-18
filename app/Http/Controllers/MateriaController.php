@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Materia;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use App\Http\Controllers\MateriaController;
+use Illuminate\Support\Facades\Storage;
 
 class MateriaController extends Controller
 {
@@ -13,6 +16,8 @@ class MateriaController extends Controller
     public function index()
     {
         //
+        $datos['materias']=Materia::paginate(10);
+        return view('materias.index',$datos);
     }
 
     /**
@@ -21,6 +26,7 @@ class MateriaController extends Controller
     public function create()
     {
         //
+        return view('materias.create');
     }
 
     /**
@@ -45,6 +51,7 @@ class MateriaController extends Controller
     public function edit(Materia $materia)
     {
         //
+        return view('materias/edit');
     }
 
     /**

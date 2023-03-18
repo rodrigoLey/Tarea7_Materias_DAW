@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\MateriaController;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,3 +17,9 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::get('/materias/edit',[MateriaController::class,'edit']);
+//Route::get('/materias/create',[MateriaController::class,'create']);
+//Route::get('/materias',[MateriaController::class,'index']);
+
+Route::resource('materias',MateriaController::class);
