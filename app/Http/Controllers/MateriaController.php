@@ -35,6 +35,17 @@ class MateriaController extends Controller
     public function store(Request $request)
     {
         //
+        $datosMaterias = request()->except('_token');
+
+        if($request->hasFile('Foto')){
+            $datosMaterias['Foto']=$request->file('Foto')->store('upload','public');
+
+        }
+
+        Materia::insert($datosMaterias);
+
+        response()->json($datosMaterias);
+        return redirect('/materias');
     }
 
     /**
@@ -48,25 +59,40 @@ class MateriaController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Materia $materia)
+    public function edit($id)
     {
         //
-        return view('materias/edit');
+        $materias=Materia::findOrFail($id);
+
+        return view('materias.edit', compact('materias'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Materia $materia)
+    public function update(Request $request, $id)
     {
         //
+        $datosMaterias = request()->except(['_token','_method']);
+        if($request->hasFile('Foto')){
+            $materias=Materia::findOrFail($id);
+            Storage::delete('public/'.$materias->Foto);
+            $datosMaterias['Foto']=$request->file('Foto')->store('upload','public');
+        }
+
+        Materia::where('id','=',$id)->update($datosMaterias);
+        $materias=Materia::findOrFail($id);
+        view('materias.edit', compact('materias'));
+        return redirect('/materias');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Materia $materia)
+    public function destroy($id)
     {
         //
+        Materia::destroy($id);
+        return redirect('materias');
     }
 }
